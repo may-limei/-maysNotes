@@ -1,0 +1,5 @@
+【box model】盒模型
+
+1. 标准盒模型与IE盒模型的width定义有区别，前者width仅为元素宽度，后者width包括padding和border宽度。
+
+
