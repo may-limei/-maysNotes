@@ -1,0 +1,12 @@
+CSS的位置有3种：
+  1. 行间样式（内联样式），如<div style="width:100px; height:120px;"> </div>
+  2. 内部样式，<head>中放<style></style>
+  3. 外部样式，<head>中放<link rel="stylesheet" href="....." />
+  
+CSS文件的优先级：
+  最高：行间样式
+  次之：内部样式
+  其后：外部样式
+  最后：属性默认值
+  
+若文件优先级一样，那就复杂了。
