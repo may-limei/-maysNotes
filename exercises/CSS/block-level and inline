@@ -1,0 +1,29 @@
+【block-level and inline】块级元素与内联元素
+
+1. 定义
+   HTML中的元素大多被定义为块级元素或内联元素（行内元素）。
+   块级元素占其父级元素（容器）的整个空间，因此创建了一个块；内联元素只占据它对应标签的边框所占据的空间。
+   |注： 块级元素和内联元素的区别最高出现在HTML4.01。在HTML5中，这种区别被更复杂的内容类别代替，块级内容->流内容，行内类别->措辞内容。|
+   
+2. 区别
+ 2.1 格式区别
+    默认情况下，块级元素会新起一行，即在浏览器显示时块级元素以新一行为开始（和结束）；内联元素通常不会以新行开始（或结束）。
+ 2.2 内容区别
+    块级元素可包含其它块级元素和内联元素；内联元素只能包含数据和其它内联元素。
+
+3. 元素列表
+ 3.1 块级
+    <div>, <h1>, <p>, <ul>, <table>, <hr>, <ol>, <pre>,
+    <address>, <aside>, <article>, <audio>, <blockquote>, <canvas>, <dd>, 
+    <filedset>, <footer>, <figure>, <figcaption>, <form>, <header>, <hgroup>, 
+    <noscript>, <output>, <section>, <video>
+ 3.2 内联
+    <b>, <td>, <a>, <img>, <i>, <small>, <big>, <tt>,
+    <code>, <em>, <abbr>, <accronym>, <cite>, <dfn>, <kbd>, 
+    <br>, <strong>, <object>, <var>, <samp>, <bdo>, <map>, <q>,
+    <script>, <span>, <sub>, <sup>,
+    <button>, <input>, <select>, <textarea>
+
+
+
+
