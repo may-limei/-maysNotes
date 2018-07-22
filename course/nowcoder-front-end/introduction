@@ -1,0 +1,9 @@
+HTML: Hypertext Markup Language
+CSS: Cascading Style Sheets
+
+PS切图：Ctrl+R 辅助线；
+       Ctrl+Alt+Shift+S 保存为web和设备所用格式；
+           gif: 可动图，可全透明，不可半透明；
+           png-8: 可全透明，不可半透明；（小图保存时，与gif比哪个小存哪个）
+           png-24: 可全透明，可其它透明度；
+           jpeg: 大图保留清晰度用它，不可透明。
