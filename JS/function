@@ -1,0 +1,249 @@
+1. 函数名。
+
+函数即对象，函数名是指针（指针变量）。
+
+每个函数都是Function类型的实例。
+
+函数名是指针，不会与某个函数绑定。也就是说，函数名（实际是个存了指针的变量）里的指针可以被修改，而函数也可以有多个函数名。
+
+函数名本身就是变量，也可以作为值来使用，所以一个函数可以作为另一个函数的参数，也可以作为返回值。
+
+注意，使用不带圆括号的函数名是访问函数指针，而非调用函数。要访问某个函数而不执行函数的话，直接访问不带小括号的函数名即可。
+
+2.函数属性和方法。
+
+函数内部有：2个特殊对象arguments和this；4个属性caller、length、prototype、constructor；9个方法call()、apply()、bind()、valueOf()、toLocaleString()、toString()、isPrototypeOf()、hasOwnProperty()、propertyIsEnumerable()。
+
+(1).arguments。
+
+这是一个对象，用来访问维护函数参数的数组。
+
+访问数组元素用[]，arguments[0]是函数的第一个参数。访问数组长度用length属性（不是方法），arguments.length可知命名参数的个数。
+
+arguments永远与对应的命名参数同步，包括值和个数。
+
+arguments对象与命名参数虽然同步，但存储空间是独立的。
+
+没有传递值的命名参数被自动赋予undefined值。
+
+arguments的length由调用函数时传入的参数数目决定，而不是定义函数时命名参数的个数。
+
+所以，如果命名参数有两个，但输入参数只有一个，则arguments.length为1，且手动赋值arguments[1]=12;也不会传给第二个命名参数，第二个命名参数的值还是默认的undefined。例如：
+
+function sum(num1, num2){
+
+    arguments[1]=120;
+
+    return  num1+num2;
+
+}
+
+sum(10);//输出NaN，因为num2的值为undefined
+
+分析：
+
+sum.length值为2。命名参数有两个，num1和num2，所以函数sum期望在被调用时输入两个参数。
+
+arguments.length的值为1。sum函数被调用时传入的参数只有一个，所以为1。
+
+num2的值为undefined。调用sum函数时，传入的参数只有一个，所以num2为默认的undefined。即使函数中有arguments[1]=120，也无法传给num2。
+
+sum(10）返回NaN，因为num1为10，num2为undefined，10+undefined得到NaN。
+
+arguments的属性和方法：
+
+length，属性，获取命名参数个数。
+
+callee，属性，是一个指针，指向本arguments对象的函数。可用于消除紧密耦合（例如，阶乘函数递归方法优化）。
+
+caller，属性，非严格模式下始终为undefined，严格模式下访问它会导致错误。
+
+(2). this。
+
+this引用的是函数执行的环境对象。
+
+在全局作用域调用函数时，this对象引用的是window。（执行环境为全局环境）
+
+(3).caller。
+
+函数的caller属性保存调用当前函数的函数引用。（实践经验，不知对否）需要在本函数内使用时才返回当前本函数的函数引用（理解为“保存此时调用本函数的函数名”）。例如，
+
+function myFunction(a,b){
+
+     add10(a);
+
+     alert(add10.caller);//最后弹出，输出为“null”。
+
+     return a*b;
+
+}
+
+function add10(c){
+
+     alert(arguments.callee.caller);//第二个弹出，
+
+                                                //输出myFunction()的定义语句。即本程序前5行。
+
+     alert(add10.caller);//第三个弹出，输出与第二个一样
+
+     return c+10;
+
+}
+
+alert(add10.caller);//首先弹出，输出“null”
+
+(4). length。
+
+表示函数期望在被调用时传入的参数个数，其实也就是定义时命名参数的个数。
+
+与arguments对象的length不同，函数的length是期望在被调用是传入的参数个数（期望个数），而arguments.length是实际调用时传入参数的个数（实际个数）。
+
+(5). prototype。
+
+
+
+(6).constructor。从对象Object那里继承来的属性。
+
+(7).apply()。
+
+接收两个参数，第一个是运行函数的作用域（即设置本函数的this值）；第二个是函数的参数数组（可以是Array实例，也可以是arguments对象）。
+
+设置函数体内this对象的值，使得函数在特定的作用域调用。例如，
+
+function  sum(num1, num2){ return num1+num2;}
+
+function   callSum(num1, num2){
+
+    return   sum.apply(this, arguments);//这个和argumentsthis是callSum函数的。
+
+}
+
+(8).call()。
+
+与apply()一样的用途，只是call接受参数的方式不同，第一个参数为运行函数的作用域（即设置本函数的this值）；后面的参数为函数的所有参数（必须明确传入所有参数，所有）。
+
+apply()和call()的真正用途其实是扩充函数的作用域。例如，
+
+window.color="red";
+
+var o={color:"blue"};
+
+function  sayColor(){ alert(this.color); }
+
+sayColor();  //"red"
+
+sayColor.call(this);  //"red"
+
+sayColor.call(this);  //"red"
+
+sayColor.call(o);  //"blue"
+
+(9).bind()。
+
+将bind()中的值绑定给函数的this值。
+
+例如，同样是上述代码，在加上如下代码后，执行objectSayColor函数，输出的为blue，因为this值绑定了o：
+
+var objectSayColor=sayColor.bind(o);
+
+objectSayColor();  //"blue"
+
+(10).valueOf()。从对象Object那里继承来的方法。
+
+(11).toLocaleString()。从对象Object那里继承来的方法。
+
+(12). toString()。从对象Object那里继承来的方法。
+
+(13).isPrototypeOf(object)。从对象Object那里继承来的方法。
+
+(14). hasOwnProperty(propertyName)。从对象Object那里继承来的方法。
+
+(15).propertyIsEnumerable(propertyName)。从对象Object那里继承来的方法。
+
+
+
+1. 函数声明。
+
+函数使用function关键字声明，在代码执行之前，解析器通过一个函数声明提升的过程，读取并将函数声明添加到执行环境中。
+
+对代码求值时，JavaScript引擎在第一遍会函数声明并将它们放到源代码树的顶部。所以函数调用在函数声明之前也没有问题。
+
+函数表达式没有函数声明提升的过程，所以调用函数表达式定义的函数时，必须在函数表达式的后面。
+
+也可以将函数声明与函数表达式同时使用，例如，var  sum=function sum(){}。但是这种语法在Safari中会导致错误。
+
+函数声明与函数表达式在其他方面没有区别。
+
+函数声明
+
+函数表达式
+
+方法定义
+
+箭头函数
+
+函数生成器
+
+函数构造器
+
+HTML中?算定义还是声明？
+
+2.函数定义。
+
+定义函数的方法有多种：
+
+(1).使用function声明的方式定义。
+
+(2). 使用函数表达式定义函数。
+
+var  sum = function(num1,num2){return  num1+num2};
+
+(3).使用Function构造函数定义函数（不推荐，因为这回导致解析两次代码，第一次解析常规代码，第二次解析传入构造函数的字符串）。
+
+Function构造函数可以接收任意数量的参数，但最后一个参数始终被看成函数体。用Function定义函数的格式，例如，
+
+var sum=new  Function("num1", "num2", "return  num1+num2");
+
+3.函数表达式。
+
+4.函数参数。
+
+函数不介意传进来的参数的个数和类型，即便定义的参数只有两个，也可以传入零个、一个、两个、三个、四个、更多个参数。
+
+ECMScript中的函数参数在内部用一个数组来表示的，函数接收的是这个数组，并不关心数组中是否有元素，有几个元素。
+
+可通过arguments对象（不是Array的实例）访问这个数组，数组第一个元素（第一个参数）用arguments[0]访问，第二个用arguments[1]访问。
+
+可以通过arguments的length属性获知有多少个参数传给了函数,arguments.length。
+
+arguments对象中的值与对应命名参数一致，但是他们的内存空间时独立的。
+
+没有传递值的命名参数将自动被赋予undefined值。
+
+5.函数返回值。
+
+函数在执行return语句后立即退出并返回返回值，一定有返回值，没有指定返回值时返回undefined。
+
+6.函数自调用。
+
+7.没有函数重载。
+
+没有函数重载，如果定义了两个同名函数，则名字只属于后面定义的函数。
+
+为什么JS函数没有重载？原因有两个：
+
+(1).没有函数签名。其他函数通过函数签名（传入参数的类型和数量）来实现函数重载，但是JS函数的参数由一个数组维护（数组通过arguments对象访问），并不介意参数了个数、类型，所以没有重载。
+
+(2).函数名实际上是指向函数对象的指针，与包含对象指针的其他变量没有区别。命名多个同名函数时，只是将后面的指针覆盖前面的指针存在函数名里（函数名就像个变量一样）。所以没有重载。
+
+8.Function构造函数。
+
+9. 函数内部属性。
+
+10.函数属性和方法。（函数即对象）
+
+11. 箭头函数（ES6）。
+
+12.回调函数。
+
+13. 函数生成器。
