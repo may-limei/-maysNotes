@@ -1,0 +1,135 @@
+从阿里2018笔试题讲  addEventListener-捕获阶段-冒泡阶段
+
+    下面代码中，当点击点我时，输出的正确结果是：
+
+<div id="div2">
+
+        <div id="div1">点我</div>
+
+</div>
+
+
+var div2=document.getElementById('div2');
+
+var div1=document.getElementById('div1');
+
+div1.addEventListener('click', function(event){console.log("A");}, true);
+
+div2.addEventListener('click', function(event){console.log("B");});
+
+div1.addEventListener('click', function(event){console.log("C");}, false);
+
+div2.addEventListener('click', function(event){console.log("D");}, true);
+
+    A、A B C D 
+
+    B、D A C B 
+
+    C、A D B C 
+
+    D、D C A B 
+
+    E、B D A C 
+
+首先看看addEventListener [参考文献1]
+
+     addEventListener() 方法用于向指定元素添加事件句柄，可使用removeEventListener()方法来移除 addEventListener() 方法添加的事件句柄。语法如下：
+
+element.addEventListener(event,function,useCapture)；
+
+      三个参数中前两个是必须的，最后一个可选。event参数指定事件名（不用on前缀），如“click”；function参数指定事件触发时执行的函数；useCapture参数为布尔值，指定事件是否在捕获或冒泡阶段执行，默认为false（事件句柄在冒泡阶段执行），true表示事件句柄在捕获阶段执行。
+
+再看看捕获阶段和冒泡阶段 [参考文献2]
+
+     DOM标准的浏览器事件是：捕获事件和冒泡事件。
+
+<div id="ancestor">
+
+        <button id="child">Open the console and click me</button>
+
+</div>
+
+        对于这段程序，DOM事件模型的捕获和冒泡过程如下：
+
+        捕获事件过程：{（助记：要先从系统到事件的捕获，顶到底，父到子）
+
+1、Window
+
+2、Document
+
+3、Body
+
+4、Div#ancestor
+
+5、Button#child
+
+}
+
+        冒泡事件过程：{（助记：捕获后事件要汇报给系统，底上浮到顶，子告诉父）
+
+6、Div#ancestor
+
+7、Body
+
+8、Document
+
+9、Window
+
+}
+
+        当开发者在一个元素上注册了事件后，这个事件的响应顺序是从window(最顶层)开始一级一级的向下传播，然后到了该元素后事件捕获过程结束，事件开如冒泡，一级一级向父层元素冒泡（请注意第6步）。
+
+        帮助记忆，总结一句就是，从顶到底找事件，从底到顶汇报事件。
+
+        当然，开发者可以很轻松的决定DOM标准的浏览器中的事件需要在哪个传播过程触发，对于DOM事件模型，就通过addEventListener()方法进行事件注册。
+
+        注意：IE内核浏览器的事件模型不同于DOM事件模型，IE内核的事件模型跳过了事件捕获过程，只有事件冒泡过程，事件句柄的触发顺序是从ChildNode到ParentNode，从底到顶：
+
+1、Button#child;
+
+2、div#ancestor;
+
+3、Body;
+
+4、Document
+
+        另外，IE内核浏览器的事件注册不用addEventListener()方法，而是用attachEvent()方法。
+
+最后讲讲阿里笔试题（文章开头的题目）
+
+       事件注册时用的addEventListener() 方法，可见这是一个DOM事件模型，包括了捕获过程和冒泡过程。注册的四个事件中，第一个A和第四个D的useCapture参数为true，在捕获阶段执行；中间两个事件BC的useCapture参数，一个是没有设置、故默认为false，一个是手动设置为false，反正都是false，在冒泡阶段执行。
+
+       我们知道，DOM事件模型先执行捕获阶段的事件：
+
+1、Window
+
+2、Document
+
+3、Body
+
+4、父Div(#div2)，执行div2.addEventListener('click', function(event){console.log("D");}, true);
+
+5、子Div(#div1)，执行div1.addEventListener('click', function(event){console.log("A");}, true);
+
+      再执行冒泡阶段的事件：
+
+6、子Div(#div1)，执行div1.addEventListener('click', function(event){console.log("C");}, false);
+
+7、父Div(#div2), 执行div2.addEventListener('click', function(event){console.log("B");});
+
+8、Body
+
+9、Document
+
+10、Window
+
+}
+
+所以选择B、DACB
+
+
+参考文献：
+
+[1] 《HTML DOMaddEventListener()方法》. http://www.runoob.com/jsref/met-element-addeventlistener.html
+
+[2]《js事件的捕获和冒泡阶段》. http://www.cnblogs.com/liuyitian/p/4460194.html
