@@ -1,0 +1,51 @@
+【CSS】
+
+1. visibility属性设为hidden（visible为不隐藏），隐藏后对应的页面位置仍被占用。
+
+2.display属性设为none（设为inline或block不隐藏），隐藏后对应的页面位置不背占用，后面的元素过来填上。
+
+3.opacity设为0（透明度取值0.0-1.0），页面元素仍然在，只是设为透明了。
+
+4.用position定位把元素移出可视区域。
+
+【JS】
+
+在JS中设置元素的style属性，其实就是CSS的方法，只是用JS语言设置了。例如，
+
+document.getElementById("e").style.visibility="hidden"；
+
+【angularJS】
+
+1. ng-show设为false。本质是把display属性设为none了。虽然不显示，且位置也不占用，但DOM节点还是会被渲染的，通过DOM可以访问到ng-show为false的节点。
+
+2. ng-hide设为true。本质是把display属性设为none了。与ng-show是一样的，只不过一个值为true时隐藏，一个值为false时隐藏。
+
+3.ng-if设为false。ng-if为false时不创建或者销毁节点，通过DOM访问不到；为true时创建节点。
+
+【Vue.js】
+
+1. v-show值设为false。v-show只是简单地切换元素的 CSS 属性display。带有v-show的元素始终会被渲染并保留在 DOM 中。
+
+2. v-if值设为false。与ng-if类似，false时不创建或销毁节点，通过DOM访问不到；为true时创建节点。
+
+【jQuery】
+
+1.通过hide()方法隐藏元素，通过show()方法显示元素。例如，
+
+$("#hide").click(function(){ $("p").hide();});
+
+$("#show").click(function(){  $("p").show();});
+
+2. 使用 toggle() 方法来切换 hide() 和 show() 方法。显示被隐藏的元素，隐藏已显示的元素。例如，
+
+$("button").click(function(){ $("p").toggle();});
+
+3. 设置CSS的display属性。$("#d").css("display","none");
+
+4.设置CSS的visibility属性。$("#d").css("visibility","hidden");
+
+5. 设置CSS的opacity属性设为0。$("#d").css("opacity","0");
+
+6.用position定位把元素移出可视区域。
+
+
